@@ -1,0 +1,23 @@
+extends layout
+
+block content
+    table
+        tr
+            th Genome ID
+            th Name
+            th Taxonomy ID
+            th TF Regulon Count
+            th TF Site Count
+            th RNA Regulon Count
+            th RNA Site Count
+        
+        for genome in genomes
+            tr
+                td
+                    a(href=`/${genome.genomeId}`)= genome.genomeId
+                td= genome.name
+                td= genome.taxonomyId
+                td= genome.tfRegulonCount
+                td= genome.tfSiteCount
+                td= genome.rnaRegulonCount
+                td= genome.rnaSiteCount
