@@ -7,11 +7,18 @@ module.exports.construct = (genomeId, cb) => {
         let matrix = "";
         let normalise = true;
 
-        // Column headers
+        // Set csv column headers and remove duplicate genes
         for (let net of network) {
             for (let regulator of net.regulators) {
                 matrix += `,${regulator.vimssId}`;
             }
+
+            net.genes = net.genes.reduce(
+                (a, b) => {
+                    if (!a.find((g) => g.vimssId == b.vimssId)) a.push(b);
+                    return a;
+                }, []
+            );
         }
 
         matrix += '\n';
@@ -27,7 +34,7 @@ module.exports.construct = (genomeId, cb) => {
                             for (let targetGene of target.genes) {
                                 if (queryGene.vimssId == targetGene.vimssId) {
                                     commonGenes++;
-                                    continue;
+                                    break;
                                 }
                             }
                         }
