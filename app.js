@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 
 const regprecise = require("./libs/regprecise.js");
-const distanceMatrix = require("./libs/distance-matrix.js");
+const similarityMatrix = require("./libs/similarity-matrix.js");
 
 const PORT = 3000;
 
@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/:genomeId", (req, res) => {
-    distanceMatrix.construct(req.params.genomeId, (err, matrix) => {
+    similarityMatrix.construct(req.params.genomeId, (err, matrix) => {
         res.send(matrix).end();
     })
 });
