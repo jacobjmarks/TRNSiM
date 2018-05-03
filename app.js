@@ -2,7 +2,7 @@ const path = require("path");
 const express = require("express");
 const app = express();
 
-const regprecise = require("./libs/regprecise-rest.js");
+const regprecise = require("./libs/regprecise.js");
 
 const PORT = 3000;
 

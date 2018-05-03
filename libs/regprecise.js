@@ -45,3 +45,59 @@ module.exports.getRegulators = (regulonId, cb) => {
         return cb(null, regulators.length ? regulators : [regulators]);
     })
 }
+
+module.exports.transcriptionalNetwork = (genomeId, cb) => {
+    this.getRegulons(genomeId, (err, regulons) => {
+        if (err) return cb(err, null);
+
+        let network = [];
+
+        let regulonCount = regulons.length;
+        let reqError = false;
+
+        for (let regulon of regulons) {
+            this.getRegulators(regulon.regulonId, (err, regulators) => {
+                if (!regulators) return regulonCount--;
+                if (reqError) return;
+
+                if (err) {
+                    reqError = true;
+                    regulonCount--;
+                    return cb(err, null);
+                }
+
+                this.getGenes(regulon.regulonId, (err, genes) => {
+                    if (reqError) return;
+    
+                    if (err) {
+                        reqError = true;
+                        regulonCount--;
+                        return cb(err, null);
+                    }
+
+                    let filteredGenes = [];
+
+                    for (let gene of genes) {
+                        let match = false;
+                        for (let regulator of regulators) {
+                            if (gene.vimssId == regulator.vimssId) {
+                                match = true;
+                            }
+                        }
+
+                        if (!match) filteredGenes.push(gene);
+                    }
+
+                    network.push({
+                        regulators: regulators,
+                        genes: filteredGenes
+                    });
+
+                    if (network.length == regulonCount) {
+                        cb(null, network);
+                    }
+                })
+            })
+        }
+    })
+}
