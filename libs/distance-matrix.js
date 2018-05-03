@@ -10,7 +10,7 @@ module.exports.construct = (genomeId, cb) => {
         // Column headers
         for (let net of network) {
             for (let regulator of net.regulators) {
-                matrix += `\t${regulator.vimssId}`;
+                matrix += `,${regulator.vimssId}`;
             }
         }
 
@@ -32,7 +32,7 @@ module.exports.construct = (genomeId, cb) => {
                             }
                         }
                         
-                        matrix += `\t${normalise ? commonGenes / query.genes.length : commonGenes}`;
+                        matrix += `,${normalise ? commonGenes / query.genes.length : commonGenes}`;
                     }
                 }
                 matrix += '\n';
