@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
 
 app.get("/:genomeId", (req, res) => {
     similarityMatrix.construct(req.params.genomeId, (err, matrix) => {
-        res.send(matrix).end();
+        res.contentType("text/plain").send(matrix).end();
     })
 });
 
